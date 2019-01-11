@@ -1,0 +1,29 @@
+<#--
+-- Get the field from a given code
+-- @param entry the entry
+-- @param fieldCode the code
+-- @return the field
+-->
+<#function getFieldByCode entry fieldCode>
+    <#if entry.fields?? && entry.fields?has_content>
+        <#list entry.fields as field>
+            <#if field?? && field.code?? && field.code == fieldCode>
+                <#return field>
+            </#if>
+        </#list>
+    </#if>
+</#function>
+
+<#--
+-- Build the entry name
+-- @param entry the entry
+-- @param entry_iteration_number the iteration number
+-- @return the name
+-->
+<#function buildEntryName entry entry_iteration_number='' >
+  <#assign name = 'attribute' + entry.idEntry>
+  <#if entry_iteration_number?? && entry_iteration_number?has_content && entry_iteration_number gt 0>
+    <#assign name = 'nIt' + entry_iteration_number + '_attribute' + entry.idEntry>
+  </#if>
+  <#return name />
+</#function>

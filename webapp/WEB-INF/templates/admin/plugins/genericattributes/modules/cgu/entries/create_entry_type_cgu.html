@@ -1,0 +1,45 @@
+ <#include "/admin/plugins/genericattributes/modules/cgu/commons.html" />
+<@row>
+    <@columns>
+        <@box color='primary'>
+            <@boxHeader title='#i18n{module.genericattributes.cgu.createEntry.titleQuestion} : "${form.title}"' />
+            <@boxBody>
+			<!-- l'URL d'action du formulaire est un exemple -->
+                <@tform method="post" name="manage_entries" action="jsp/admin/plugins/forms/ManageQuestions.jsp">
+                    <fieldset>
+                        <legend class="sr-only">#i18n{module.genericattributes.cgu.createEntry.titleQuestion} : '${form.title}'</legend>
+                        <input name="id_type" value="${entry.entryType.idType}" type="hidden">
+                        <#if entry.fieldDepend?exists>
+                            <input name="id_field" value="${entry.fieldDepend.idField}" type="hidden">
+                        </#if>
+                        <input name="id_parent" value="${id_parent!'0'}" type="hidden">
+                        <input name="id_step" value="${step.id!'0'}" type="hidden">
+                        <@formGroup labelFor='title' labelKey='#i18n{module.genericattributes.cgu.createEntry.labelTitle}' helpKey='#i18n{module.genericattributes.cgu.createEntry.labelTitleComment}' mandatory=true>
+                            <@input type='text' name='title' id='title' value='' maxlength=255 />
+                        </@formGroup>
+                        <@formGroup labelFor='entry_code' labelKey='#i18n{module.genericattributes.cgu.createEntry.labelEntryCode}' mandatory=true>
+                            <@input type='text' name='entry_code' id='entry_code' value='' maxlength=255 />
+                        </@formGroup>
+                        <@formGroup labelFor='cgu_code' labelKey='#i18n{module.genericattributes.cgu.createEntry.labelCguCode}' helpKey='#i18n{module.genericattributes.cgu.createEntry.labelCguCode}' mandatory=true>
+                            <@input type='text' name='cgu_code' id='cgu_code' value='' maxlength=255 />
+                        </@formGroup>
+                        <@formGroup labelFor='help_message' labelKey='#i18n{forms.createEntry.labelHelpMessage}' helpKey='#i18n{forms.createEntry.labelHelpMessageComment}'>
+                            <@input type='textarea' name='help_message' id='help_message' rows=2></@input>
+                        </@formGroup>
+                        <@formGroup labelFor='css_class' labelKey='#i18n{module.genericattributes.cgu.createEntry.labelCSSClass}' helpKey='#i18n{module.genericattributes.cgu.createEntry.labelCSSClassComment}'>
+                            <@input type='text' name='css_class' id='css_class' value='${entry.CSSClass!}' maxlength=255 />
+                        </@formGroup>
+                        <@formGroup>
+                            <@button type='submit' name='action_createQuestion' buttonIcon='save' title='#i18n{module.genericattributes.cgu.modifyEntry.buttonSave}' showTitleXs=false size='' />
+							<!-- href du bouton a changer - ceci est un exemple -->
+                            <@aButton href='jsp/admin/plugins/forms/ManageQuestions.jsp?id_step=${step.id}' buttonIcon='close' title='#i18n{module.genericattributes.cgu.createEntry.buttonCancel}' showTitleXs=false size='' color='btn-secondary' />
+                        </@formGroup>
+                    </fieldset>
+                </@tform>
+            </@boxBody>
+        </@box>
+    </@columns>
+</@row>
+<#include "/admin/util/editor/editor.html" />
+<@initEditor />
+ 

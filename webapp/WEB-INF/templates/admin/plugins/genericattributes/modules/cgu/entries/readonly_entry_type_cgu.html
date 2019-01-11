@@ -1,0 +1,21 @@
+<#include "/admin/plugins/forms/commons.html" />
+
+<div class="form-group">
+  <label class="col-xs-12 col-sm-3 control-label">
+    ${entry.title!''}
+  </label>
+
+  <#if getResponseContainingTheFieldWithCode( list_responses, "cgu_code" )?? >
+    <#assign responseCguCode = getResponseContainingTheFieldWithCode( list_responses, "cgu_code" ) >
+  </#if>
+  
+  <div class="col-xs-12 col-sm-9">
+    <#if responseAgreement?? && responseAgreement.toStringValueResponse == "true">
+      <a href="jsp/site/Portal.jsp?page=cgu&view=cgu&cgu_code=${responseCguCode.value}" target="_blank">#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.link}</a>
+    <#else if isLastVersionAccepted == "true">
+    	<@tag color='warning'><@icon style='exclamation-triangle' /></@tag>&nbsp;#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.lastVersionUnaccepted}
+    <#else>
+      <@tag color='warning'><@icon style='exclamation-triangle' /></@tag>&nbsp;#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.unknown}
+    </#if>
+  </div>
+</div>

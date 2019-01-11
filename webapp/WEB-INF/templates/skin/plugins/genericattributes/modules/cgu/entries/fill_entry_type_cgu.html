@@ -1,0 +1,54 @@
+<#include "/admin/plugins/genericattributes/modules/cgu/commons.html" />
+<#assign idName = buildEntryName( entry, entry_iteration_number )>
+<#assign fieldIsMinimumAge = getFieldByCode( entry, "is_minimum_age" ) >
+<#assign fieldAcceptedCgu = getFieldByCode( entry, "is_accepted_cgu" ) >
+<#assign fieldMinimumAge = getFieldByCode( entry, "minimum_age" ) >
+<div class="form-group">
+	<label class="control-label col-xs-12 col-sm-12 col-md-6 col-lg-5" for="${idName}_is_minimum_age_${fieldIsMinimumAge.idField}" >
+		<input type="checkbox" name="${idName}_is_minimum_age" id="${idName}_is_minimum_age_${fieldIsMinimumAge.idField}" value="${fieldIsMinimumAge.value}" 
+		<#if list_responses?? && list_responses?has_content>
+			<#list list_responses as response>
+				<#if response.entry.idEntry == entry.idEntry && response.field??>
+					<#list entry.fields as field>
+						<#if response.field.idField == field.idField>checked="checked"</#if>
+					</#list>
+				</#if>
+			</#list>
+		</#if>
+		class="${entry.CSSClass!} " />
+		${i18n('module.genericattributes.cgu.frontOffice.labelIsMinimumAge', fieldMinimumAge.value)}
+	</label>
+</div>
+<div class="form-group">
+	<label class="control-label col-xs-12 col-sm-12 col-md-6 col-lg-6" for="${idName}_is_accepted_cgu_${fieldAcceptedCgu.idField}" >
+		<input type="checkbox" name="${idName}_is_accepted_cgu" id="${idName}_is_accepted_cgu_${fieldAcceptedCgu.idField}" value="${fieldAcceptedCgu.value}" 
+			<#if list_responses?? && list_responses?has_content>
+				<#list list_responses as response>
+					<#if response.entry.idEntry == entry.idEntry && response.field??>
+						<#list entry.fields as field>
+							<#if response.field.idField == field.idField>checked="checked"</#if>
+						</#list>
+					</#if>
+				</#list>
+			</#if>
+			class="${entry.CSSClass!} " />
+			#i18n{module.genericattributes.cgu.frontOffice.labelIsAccepted} 
+			<#list entry.fields as field>
+				<#if field.code == "cgu_code">
+					<a href='jsp/site/Portal.jsp?page=cgu&view=cgu&cgu_code=${field.value}' target='_blank' >#i18n{module.genericattributes.cgu.frontOffice.labelCgu}</a>
+					</#if>
+			</#list>
+	</label>
+	<#if entry.helpMessage?exists&&entry.helpMessage!=''>
+		<span class="help-block">${entry.helpMessage}</span>
+	</#if>
+</div>
+
+<#if list_responses??>
+	<#list list_responses as response>
+		<#if response.entry.idEntry == entry.idEntry && response.entry.error?? && response.entry.error.isDisplayableError>
+			<#assign error = response.entry.error>
+			<div class="alert alert-danger">${error.errorMessage}</div>
+		</#if>
+	</#list>
+</#if>

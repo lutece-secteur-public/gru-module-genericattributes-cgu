@@ -1,0 +1,2 @@
+INSERT INTO genatt_entry_type (id_type,title,is_group,is_comment,is_mylutece_user,class_name,icon_name,plugin) VALUES 
+('117', 'Conditions générales d''utilisations', 0, 0, 0, 'genericattributes-cgu.entryTypeCgu', 'legal', 'cgu');
