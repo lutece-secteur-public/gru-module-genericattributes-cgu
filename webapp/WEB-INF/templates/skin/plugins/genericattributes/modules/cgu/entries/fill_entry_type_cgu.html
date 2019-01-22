@@ -49,6 +49,7 @@
 		<#if response.entry.idEntry == entry.idEntry && response.entry.error?? && response.entry.error.isDisplayableError>
 			<#assign error = response.entry.error>
 			<div class="alert alert-danger">${error.errorMessage}</div>
+            <#break>
 		</#if>
 	</#list>
 </#if>

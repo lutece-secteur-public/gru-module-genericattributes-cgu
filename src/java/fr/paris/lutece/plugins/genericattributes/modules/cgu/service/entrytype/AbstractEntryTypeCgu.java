@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.genericattributes.modules.cgu.service.entrytype;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,6 +71,7 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
     private static final String PARAMETER_CGU_CODE = "cgu_code";
     private static final String FIELD_CGU_VERSION = "cgu_version";
     private static final String SUFFIX_UNDERSCORE = "_";
+    private static final String MESSAGE_SEPARATOR = "<br/>";
 
     private static final String MESSAGE_IS_MINIMUM_AGE_REQUIRED = "module.genericattributes.cgu.message.mandatory.isMinimumAgeRequired";
     private static final String MESSAGE_ACCEPTED_CGU_REQUIRED = "module.genericattributes.cgu.message.mandatory.acceptedCGURequired";
@@ -143,24 +145,31 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
     @Override
     public GenericAttributeError getResponseData( Entry entry, HttpServletRequest request, List<Response> listResponse, Locale locale )
     {
-    	if( findFieldByCode( entry, FIELD_IS_MINIMUM_AGE ) != null )
-    	{
-    		if (request.getParameter( PREFIX_ATTRIBUTE + entry.getIdEntry( ) + SUFFIX_UNDERSCORE + PARAMETER_IS_MINIMUM_AGE ) == null )
-	        {
-	            Response responseEntry = new Response( );
-	            responseEntry.setEntry( entry );
-	            listResponse.add( responseEntry );
-	
-	            return setError( MESSAGE_IS_MINIMUM_AGE_REQUIRED, entry, locale );
-	        }
-    	}
-    	if ( request.getParameter( PREFIX_ATTRIBUTE + entry.getIdEntry( ) + SUFFIX_UNDERSCORE + PARAMETER_IS_ACCEPTED_CGU ) == null )
+        List<String> listErrorMessage = new ArrayList<>( );
+
+        if ( findFieldByCode( entry, FIELD_IS_MINIMUM_AGE ) != null )
+        {
+            if ( request.getParameter( PREFIX_ATTRIBUTE + entry.getIdEntry( ) + SUFFIX_UNDERSCORE + PARAMETER_IS_MINIMUM_AGE ) == null )
+            {
+                Response responseEntry = new Response( );
+                responseEntry.setEntry( entry );
+                listResponse.add( responseEntry );
+
+                listErrorMessage.add( MESSAGE_IS_MINIMUM_AGE_REQUIRED );
+            }
+        }
+        if ( request.getParameter( PREFIX_ATTRIBUTE + entry.getIdEntry( ) + SUFFIX_UNDERSCORE + PARAMETER_IS_ACCEPTED_CGU ) == null )
         {
             Response responseEntry = new Response( );
             responseEntry.setEntry( entry );
             listResponse.add( responseEntry );
 
-            return setError( MESSAGE_ACCEPTED_CGU_REQUIRED, entry, locale );
+            listErrorMessage.add( MESSAGE_ACCEPTED_CGU_REQUIRED );
+        }
+
+        if ( !listErrorMessage.isEmpty( ) )
+        {
+            return createError( listErrorMessage, locale );
         }
 
         Field fieldIsMinimumAge = findFieldByCode( entry, FIELD_IS_MINIMUM_AGE );
@@ -216,11 +225,34 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
         return null; // TODO TEST sinon lien cgu
     }
 
-    private GenericAttributeError setError( String message, Entry entry, Locale locale )
+    /**
+     * Creates a Generic attribute error from the specified messages
+     * 
+     * @param listErrorMessage
+     *            the error messages
+     * @param locale
+     *            the locale
+     * @return the Generic attribute error
+     */
+    private GenericAttributeError createError( List<String> listErrorMessage, Locale locale )
     {
         GenericAttributeError error = new GenericAttributeError( );
         error.setMandatoryError( true );
-        error.setErrorMessage( I18nService.getLocalizedString( message, locale ) );
+
+        Iterator<String> iterator = listErrorMessage.iterator( );
+        StringBuilder stringBuilder = new StringBuilder( );
+
+        while ( iterator.hasNext( ) )
+        {
+            stringBuilder.append( I18nService.getLocalizedString( iterator.next( ), locale ) );
+
+            if ( iterator.hasNext( ) )
+            {
+                stringBuilder.append( MESSAGE_SEPARATOR );
+            }
+        }
+
+        error.setErrorMessage( stringBuilder.toString( ) );
         return error;
     }
 
