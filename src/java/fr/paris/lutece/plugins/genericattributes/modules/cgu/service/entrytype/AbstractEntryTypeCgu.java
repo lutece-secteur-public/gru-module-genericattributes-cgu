@@ -76,7 +76,7 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
     private static final String MESSAGE_IS_MINIMUM_AGE_REQUIRED = "module.genericattributes.cgu.message.mandatory.isMinimumAgeRequired";
     private static final String MESSAGE_ACCEPTED_CGU_REQUIRED = "module.genericattributes.cgu.message.mandatory.acceptedCGURequired";
     private static final String MESSAGE_INVALD_CGU_CODE = "module.genericattributes.cgu.messageInvalidCguCode";
-    
+
     private static final int ZERO = 0;
 
     @Inject
@@ -120,11 +120,11 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
         CguVersion cguVersion = _cguService.findLastVersion( strCguCode );
         if ( cguVersion != null )
         {
-        	if( cguVersion.getMinimumAge() != ZERO )
-        	{
-        		setValue( entry, FIELD_IS_MINIMUM_AGE, Boolean.FALSE.toString( ) );
-        		setValue( entry, MINIMUM_AGE, String.valueOf( cguVersion.getMinimumAge( ) ) );
-        	}
+            if ( cguVersion.getMinimumAge( ) != ZERO )
+            {
+                setValue( entry, FIELD_IS_MINIMUM_AGE, Boolean.FALSE.toString( ) );
+                setValue( entry, MINIMUM_AGE, String.valueOf( cguVersion.getMinimumAge( ) ) );
+            }
             setValue( entry, FIELD_CGU_VERSION, String.valueOf( cguVersion.getVersion( ) ) );
         }
         else
