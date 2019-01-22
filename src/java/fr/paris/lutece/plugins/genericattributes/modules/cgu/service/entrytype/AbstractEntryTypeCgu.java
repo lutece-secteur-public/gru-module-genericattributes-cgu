@@ -37,13 +37,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 
 import fr.paris.lutece.plugins.cgu.business.CguVersion;
 import fr.paris.lutece.plugins.cgu.service.CguService;
-import fr.paris.lutece.plugins.cgu.service.ICguService;
 import fr.paris.lutece.plugins.genericattributes.business.Entry;
 import fr.paris.lutece.plugins.genericattributes.business.Field;
 import fr.paris.lutece.plugins.genericattributes.business.GenericAttributeError;
@@ -52,7 +52,6 @@ import fr.paris.lutece.plugins.genericattributes.service.entrytype.EntryTypeServ
 import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 /**
  * 
@@ -78,8 +77,9 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
     
     private static final int ZERO = 0;
 
-    private static CguService _cguService = SpringContextService.getBean( ICguService.BEAN_NAME );
-    
+    @Inject
+    private CguService _cguService;
+
     /**
      * {@inheritDoc}
      */
