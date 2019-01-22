@@ -8,11 +8,9 @@
 			<@boxBody>
 				<fieldset>
 				<legend class="sr-only">#i18n{module.genericattributes.cgu.modifyEntry.titleQuestion} : "${form.title}"</legend>
-				<!-- l'URL d'action du formulaire est un exemple -->
-				<@tform action='jsp/admin/plugins/forms/ManageQuestions.jsp'>
+				<!-- action URL must be changed - this is only an example -->
+				<@tform action='jsp/admin/plugins/form/DoModifyEntry.jsp'>
 					<input name="id_entry" value="${entry.idEntry}" type="hidden" />
-					<input name="id_step" value="${step.id}" type="hidden" />
-					<input name="id_question" value="${question.id}" type="hidden" />
 					<@formGroup labelFor='title' labelKey='#i18n{module.genericattributes.cgu.createEntry.labelTitle}' helpKey='#i18n{module.genericattributes.cgu.createEntry.labelTitleComment}' mandatory=true>
 						<@input type='text' name='title' id='title' value='${entry.title}' maxlength=255 />
 					</@formGroup>
@@ -29,10 +27,10 @@
 						<@input type='text' name='css_class' id='css_class' value='${entry.CSSClass!}' maxlength=255 />
 					</@formGroup>
 					<@formGroup>
-						<@button type='submit' name='action_modifyQuestion' buttonIcon='save' title='#i18n{module.genericattributes.cgu.modifyEntry.buttonSave}' showTitleXs=false size='' />
-						<@button type='submit' name='action_saveQuestion' buttonIcon='check' title='#i18n{module.genericattributes.cgu.modifyEntry.buttonApply}' showTitleXs=false size='' />
-						<!-- href du bouton a changer - ceci est un exemple -->
-						<@aButton href='jsp/admin/plugins/forms/ManageQuestions.jsp?id_step=${step.id}' buttonIcon='close' title='#i18n{module.genericattributes.cgu.createEntry.buttonCancel}' showTitleXs=false size='' color='btn-secondary' />
+						<!-- action of these buttons must be changed - this is only an example -->
+                        <@button type='submit' name='save' buttonIcon='save' title='#i18n{module.genericattributes.cgu.modifyEntry.buttonSave}' showTitleXs=false size='' />
+						<@button type='submit' name='apply' buttonIcon='check' title='#i18n{module.genericattributes.cgu.modifyEntry.buttonApply}' showTitleXs=false size='' />
+						<@aButton href='jsp/admin/plugins/form/ModifyForm.jsp?id_form=${form.idForm}&plugin_name=form' buttonIcon='close' title='#i18n{module.genericattributes.cgu.createEntry.buttonCancel}' showTitleXs=false size='' color='btn-secondary' />
 					</@formGroup>
 				</@tform>
 				</fieldset>
