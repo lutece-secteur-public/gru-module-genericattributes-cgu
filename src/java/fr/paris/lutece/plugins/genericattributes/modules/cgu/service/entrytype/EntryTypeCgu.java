@@ -43,8 +43,6 @@ import fr.paris.lutece.plugins.genericattributes.business.Entry;
 public class EntryTypeCgu extends AbstractEntryTypeCgu
 {
 
-    public static final String BEAN_FORM_RESPONSE_SERVICE = "forms.responseService";
-
     private static final String TEMPLATE_CREATE = "admin/plugins/genericattributes/modules/cgu/entries/create_entry_type_cgu.html";
     private static final String TEMPLATE_MODIFY = "admin/plugins/genericattributes/modules/cgu/entries/modify_entry_type_cgu.html";
     private static final String TEMPLATE_READONLY_BACKOFFICE = "admin/plugins/genericattributes/modules/cgu/entries/readonly_entry_type_cgu.html";

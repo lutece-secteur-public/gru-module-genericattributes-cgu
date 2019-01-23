@@ -63,19 +63,21 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
 {
 
     private static final String PARAMETER_IS_MINIMUM_AGE = "is_minimum_age";
-    private static final String FIELD_IS_MINIMUM_AGE = "is_minimum_age";
     private static final String PARAMETER_IS_ACCEPTED_CGU = "is_accepted_cgu";
-    private static final String FIELD_IS_ACCEPTED_CGU = "is_accepted_cgu";
-    private static final String MINIMUM_AGE = "minimum_age";
-    private static final String FIELD_CGU_CODE = "cgu_code";
     private static final String PARAMETER_CGU_CODE = "cgu_code";
-    private static final String FIELD_CGU_VERSION = "cgu_version";
-    private static final String SUFFIX_UNDERSCORE = "_";
-    private static final String MESSAGE_SEPARATOR = "<br/>";
 
+    private static final String FIELD_IS_MINIMUM_AGE = "is_minimum_age";
+    private static final String FIELD_IS_ACCEPTED_CGU = "is_accepted_cgu";
+    private static final String FIELD_MINIMUM_AGE = "minimum_age";
+    private static final String FIELD_CGU_CODE = "cgu_code";
+    private static final String FIELD_CGU_VERSION = "cgu_version";
+
+    private static final String SUFFIX_UNDERSCORE = "_";
+
+    private static final String MESSAGE_SEPARATOR = "<br/>";
     private static final String MESSAGE_IS_MINIMUM_AGE_REQUIRED = "module.genericattributes.cgu.message.mandatory.isMinimumAgeRequired";
     private static final String MESSAGE_ACCEPTED_CGU_REQUIRED = "module.genericattributes.cgu.message.mandatory.acceptedCGURequired";
-    private static final String MESSAGE_INVALD_CGU_CODE = "module.genericattributes.cgu.messageInvalidCguCode";
+    private static final String MESSAGE_INVALID_CGU_CODE = "module.genericattributes.cgu.messageInvalidCguCode";
 
     private static final int ZERO = 0;
 
@@ -88,12 +90,7 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
     @Override
     public String getRequestData( Entry entry, HttpServletRequest request, Locale locale )
     {
-        String strCode = request.getParameter( PARAMETER_ENTRY_CODE );
-        String strCguCode = request.getParameter( PARAMETER_CGU_CODE );
         String strTitle = request.getParameter( PARAMETER_TITLE );
-        String strHelpMessage = ( request.getParameter( PARAMETER_HELP_MESSAGE ) != null ) ? request.getParameter( PARAMETER_HELP_MESSAGE ).trim( ) : null;
-        String strCssClass = request.getParameter( PARAMETER_CSS_CLASS );
-
         String strFieldError = StringUtils.EMPTY;
 
         if ( StringUtils.isBlank( strTitle ) )
@@ -104,11 +101,16 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
         if ( StringUtils.isNotBlank( strFieldError ) )
         {
             Object [ ] tabRequiredFields = {
-                I18nService.getLocalizedString( strFieldError, locale )
+                I18nService.getLocalizedString( strFieldError, locale ),
             };
 
             return AdminMessageService.getMessageUrl( request, MESSAGE_MANDATORY_FIELD, tabRequiredFields, AdminMessage.TYPE_STOP );
         }
+
+        String strCode = request.getParameter( PARAMETER_ENTRY_CODE );
+        String strCguCode = request.getParameter( PARAMETER_CGU_CODE );
+        String strHelpMessage = ( request.getParameter( PARAMETER_HELP_MESSAGE ) != null ) ? request.getParameter( PARAMETER_HELP_MESSAGE ).trim( ) : null;
+        String strCssClass = request.getParameter( PARAMETER_CSS_CLASS );
 
         entry.setTitle( strTitle );
         entry.setCSSClass( strCssClass );
@@ -120,20 +122,17 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
         CguVersion cguVersion = _cguService.findLastVersion( strCguCode );
         if ( cguVersion != null )
         {
-            if ( cguVersion.getMinimumAge( ) != ZERO )
-            {
-                setValue( entry, FIELD_IS_MINIMUM_AGE, Boolean.FALSE.toString( ) );
-                setValue( entry, MINIMUM_AGE, String.valueOf( cguVersion.getMinimumAge( ) ) );
-            }
+            setValue( entry, FIELD_IS_MINIMUM_AGE, Boolean.FALSE.toString( ) );
+            setValue( entry, FIELD_MINIMUM_AGE, String.valueOf( cguVersion.getMinimumAge( ) ) );
             setValue( entry, FIELD_CGU_VERSION, String.valueOf( cguVersion.getVersion( ) ) );
         }
         else
         {
             Object [ ] tabRequiredFields = {
-                I18nService.getLocalizedString( strFieldError, locale )
+                I18nService.getLocalizedString( strFieldError, locale ),
             };
 
-            return AdminMessageService.getMessageUrl( request, MESSAGE_INVALD_CGU_CODE, tabRequiredFields, AdminMessage.TYPE_ERROR );
+            return AdminMessageService.getMessageUrl( request, MESSAGE_INVALID_CGU_CODE, tabRequiredFields, AdminMessage.TYPE_ERROR );
         }
 
         return null;
@@ -147,16 +146,14 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
     {
         List<String> listErrorMessage = new ArrayList<>( );
 
-        if ( findFieldByCode( entry, FIELD_IS_MINIMUM_AGE ) != null )
+        if ( Integer.parseInt( findFieldByCode( entry, FIELD_MINIMUM_AGE ).getValue( ) ) > ZERO
+                && request.getParameter( PREFIX_ATTRIBUTE + entry.getIdEntry( ) + SUFFIX_UNDERSCORE + PARAMETER_IS_MINIMUM_AGE ) == null )
         {
-            if ( request.getParameter( PREFIX_ATTRIBUTE + entry.getIdEntry( ) + SUFFIX_UNDERSCORE + PARAMETER_IS_MINIMUM_AGE ) == null )
-            {
-                Response responseEntry = new Response( );
-                responseEntry.setEntry( entry );
-                listResponse.add( responseEntry );
+            Response responseEntry = new Response( );
+            responseEntry.setEntry( entry );
+            listResponse.add( responseEntry );
+            listErrorMessage.add( MESSAGE_IS_MINIMUM_AGE_REQUIRED );
 
-                listErrorMessage.add( MESSAGE_IS_MINIMUM_AGE_REQUIRED );
-            }
         }
         if ( request.getParameter( PREFIX_ATTRIBUTE + entry.getIdEntry( ) + SUFFIX_UNDERSCORE + PARAMETER_IS_ACCEPTED_CGU ) == null )
         {
@@ -214,15 +211,6 @@ public abstract class AbstractEntryTypeCgu extends EntryTypeService
     public String getResponseValueForExport( Entry entry, HttpServletRequest request, Response response, Locale locale )
     {
         return response.getResponseValue( );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getResponseValueForRecap( Entry entry, HttpServletRequest request, Response response, Locale locale )
-    {
-        return null; // TODO TEST sinon lien cgu
     }
 
     /**

@@ -27,3 +27,19 @@
   </#if>
   <#return name />
 </#function>
+
+<#-- 
+-- Get the response containing the field with the given code
+-- @param responses the list of responses
+-- @param the fieldCode the code
+-- @return the response
+-->
+<#function getResponseContainingTheFieldWithCode responses fieldCode>
+  <#if responses??>
+    <#list responses as response>
+      <#if response.field?? && response.field.code?? && response.field.code == fieldCode >
+        <#return response />
+      </#if>
+    </#list>
+  </#if>
+</#function>

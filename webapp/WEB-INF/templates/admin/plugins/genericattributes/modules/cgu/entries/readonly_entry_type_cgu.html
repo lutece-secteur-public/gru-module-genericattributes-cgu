@@ -1,4 +1,4 @@
-<#include "/admin/plugins/forms/commons.html" />
+ <#include "/admin/plugins/genericattributes/modules/cgu/commons.html" />
 
 <div class="form-group">
   <label class="col-xs-12 col-sm-3 control-label">
@@ -13,9 +13,13 @@
     <#assign responseIsAcceptedCgu = getResponseContainingTheFieldWithCode( list_responses, "is_accepted_cgu" ) >
   </#if>
   
+  <#if getResponseContainingTheFieldWithCode( list_responses, "cgu_version" )?? >
+    <#assign responseCguVersion = getResponseContainingTheFieldWithCode( list_responses, "cgu_version" ) >
+  </#if>
+  
   <div class="col-xs-12 col-sm-9">
     <#if responseIsAcceptedCgu?? && responseIsAcceptedCgu.toStringValueResponse == "true">
-      <a href="jsp/site/Portal.jsp?page=cgu&view=cgu&cgu_code=${responseCguCode.toStringValueResponse}" target="_blank">#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.link}</a>
+      <a href="jsp/site/Portal.jsp?page=cgu&view=preview_cgu&cgu_code=${responseCguCode.toStringValueResponse}&cgu_version={responseCguVersion.toStringValueResponse}" target="_blank">#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.link}</a>
     <#else>
       <@tag color='warning'><@icon style='exclamation-triangle' /></@tag>&nbsp;#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.unknown}
     </#if>

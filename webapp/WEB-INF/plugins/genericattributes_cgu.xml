@@ -11,7 +11,7 @@
     <provider>module.genericattributes.cgu.module.provider</provider>
     <provider-url>http://lutece.paris.fr</provider-url>
     <icon-url>images/admin/skin/feature_default_icon.png</icon-url>
-    <copyright>Copyright (c) 2018 Mairie de Paris</copyright>
+    <copyright>Copyright (c) 2019 Mairie de Paris</copyright>
     <db-pool-required>1</db-pool-required>
     
     <core-version-dependency>
