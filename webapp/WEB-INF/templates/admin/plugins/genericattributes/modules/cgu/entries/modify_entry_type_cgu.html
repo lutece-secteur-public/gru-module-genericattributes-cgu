@@ -3,23 +3,23 @@
 <@row>
 	<@columns>
 		<@box color='primary'>
-			<@boxHeader title='#i18n{module.genericattributes.cgu.modifyEntry.titleQuestion} : "${form.title}"' />
+			<@boxHeader title='#i18n{module.genericattributes.cgu.modifyEntry.titleQuestion}' />
 			<@boxBody>
 				<fieldset>
-				<legend class="sr-only">#i18n{module.genericattributes.cgu.modifyEntry.titleQuestion} : "${form.title}"</legend>
+				<legend class="sr-only">#i18n{module.genericattributes.cgu.modifyEntry.titleQuestion}</legend>
 				<!-- action URL must be changed - this is only an example -->
 				<@tform action='jsp/admin/plugins/form/DoModifyEntry.jsp'>
 					<input name="id_entry" value="${entry.idEntry}" type="hidden" />
 					<@formGroup labelFor='title' labelKey='#i18n{module.genericattributes.cgu.createEntry.labelTitle}' helpKey='#i18n{module.genericattributes.cgu.createEntry.labelTitleComment}' mandatory=true>
 						<@input type='text' name='title' id='title' value='${entry.title}' maxlength=255 />
 					</@formGroup>
-					<@formGroup labelKey='#i18n{module.genericattributes.cgu.createEntry.labelEntryCode}'>
+					<@formGroup labelKey='#i18n{module.genericattributes.cgu.createEntry.labelEntryCode}' mandatory=true>
 						<@input type='text' name='entry_code' id='entry_code' value='${entry.code!""}' maxlength=255 />
 					</@formGroup>
-					<@formGroup labelKey='#i18n{module.genericattributes.cgu.createEntry.labelCguCode}'>
+					<@formGroup labelKey='#i18n{module.genericattributes.cgu.createEntry.labelCguCode}' helpKey='#i18n{module.genericattributes.cgu.createEntry.labelHelpCguCode}' mandatory=true>
 						<@input type='text' name='cgu_code' id='cgu_code' value='${fieldCguCode.value}' maxlength=255 />
 					</@formGroup>
-					<@formGroup labelFor='help_message' labelKey='#i18n{forms.createEntry.labelHelpMessage}'>
+					<@formGroup labelFor='help_message' labelKey='#i18n{module.genericattributes.cgu.createEntry.labelHelpMessage}' helpKey='#i18n{module.genericattributes.cgu.createEntry.labelHelpMessageComment}'>
 						<@input type='textarea' name='help_message' id='help_message' rows=2>${entry.helpMessage}</@input>
 					</@formGroup>
 					<@formGroup labelFor='css_class' labelKey='#i18n{module.genericattributes.cgu.createEntry.labelCSSClass}' helpKey='#i18n{module.genericattributes.cgu.createEntry.labelCSSClassComment}'>
