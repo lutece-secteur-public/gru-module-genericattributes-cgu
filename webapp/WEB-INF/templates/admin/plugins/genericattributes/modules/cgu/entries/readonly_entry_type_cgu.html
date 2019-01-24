@@ -19,7 +19,7 @@
   
   <div class="col-xs-12 col-sm-9">
     <#if responseIsAcceptedCgu?? && responseIsAcceptedCgu.toStringValueResponse == "true">
-      <a href="jsp/site/Portal.jsp?page=cgu&view=preview_cgu&cgu_code=${responseCguCode.toStringValueResponse}&cgu_version={responseCguVersion.toStringValueResponse}" target="_blank">#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.link}</a>
+      <a href="jsp/site/Portal.jsp?page=cgu&view=preview_cgu&cgu_code=${responseCguCode.toStringValueResponse}&cgu_version=${responseCguVersion.toStringValueResponse}" target="_blank">#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.link}</a>
     <#else>
       <@tag color='warning'><@icon style='exclamation-triangle' /></@tag>&nbsp;#i18n{module.genericattributes.cgu.entryType.termsOfService.readOnly.unknown}
     </#if>
