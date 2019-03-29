@@ -1,23 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
     <properties>
-        <title>>Module genericattributes-cgu</title>
+        <title>Module genericattributes-cgu</title>
     </properties>
     <body>
-        <section name=">Module genericattributes-cgu">
+        <section name="Module genericattributes-cgu">
             <!--
             <p>
                 <img src="images/workflow-forms.png" />
             </p>
             -->
             <subsection name="Introduction">
-                <p></p>
+                <p>
+                    Ce module fournit un <em>generic attribute</em> pour les Conditions Générales d'Utilisations (CGU). Pour cela, le module utilise le <strong>plugin-cgu</strong>. L'utilisateur peut voir la CGU. Il doit accepter la CGU. S'il existe un âge minimum d'acceptation, alors l'utilisateur doit également certifier qu'il est plus agé que cet âge minimum.
+                </p>
+            </subsection>
+            <subsection name="Instanciation">
+                <p>
+                    Comme tous les <em>generic attributes</em>, le plugin Lutece qui utilise ce <em>generic attribute</em> doit fournir les templates à utiliser pour la création, la modification et la visualisation du <em>generic attribute</em> en back-office et en front-office.
+                </p>
+                <p>
+                    La classe abstraite <code>fr.paris.lutece.plugins.genericattributes.modules.cgu.service.entrytype.AbstractEntryTypeCgu</code> permet de gérer le <em>generic attribute</em>. Pour fournir les templates, il faut créer un classe héritant de cette classe abstraite et implémenter les méthodes suivantes :
+                    <ul>
+                        <li><code>getTemplateHtmlForm( Entry entry, boolean bDisplayFront )</code> : donne le template servant à renseigner la question. Le booléen <code>bDisplayFront</code> permet de savoir s'il faut donner le template pour le front-office ou pour le back-office.</li>
+                        <li><code>getTemplateCreate( Entry entry, boolean bDisplayFront )</code> : donne le template servant à créer la configuration du <em>generic attribute</em>. Le booléen <code>bDisplayFront</code> permet de savoir s'il faut donner le template pour le front-office ou pour le back-office.</li>
+                        <li><code>getTemplateModify( Entry entry, boolean bDisplayFront )</code> : donne le template servant à modifier la configuration du <em>generic attribute</em>. Le booléen <code>bDisplayFront</code> permet de savoir s'il faut donner le template pour le front-office ou pour le back-office.</li>
+                        <li><code>getTemplateEntryReadOnly( boolean bDisplayFront )</code> : donne le template servant à afficher les informations renseignées dans la question. Le booléen <code>bDisplayFront</code> permet de savoir s'il faut donner le template pour le front-office ou pour le back-office.</li>
+                    </ul> 
+                </p>
+                <p>
+                    Une implémentation par défaut est donnée dans ce module. Elle correspond à la classe <code>fr.paris.lutece.plugins.genericattributes.modules.cgu.service.entrytype.EntryTypeCgu</code>.
+                    <strong>Attention : </strong>Cette implémentation est faite pour être utilisée avec le <strong>plugin-form</strong>. Les templates fournis ne fonctionneront pas avec un autre plugin Lutece. Si vous utilisez ce module avec un autre plugin Lutece, il faut alors soit surcharger les templates dans le site, soit fournir votre propre implémentation.</p>
+                <p>
+                    Il faut ensuite que l'implémentation soit présente dans le contexte Spring pour que Lutece la détecte. L'implémentation par défaut de ce module est présente dans le fichier <code>genericattributes_cgu_context.xml</code>.
+                </p>
+                <p>
+                    Il faut enfin référencer l'<code>EntryType</code> dans la table <code>genatt_entry_type</code>. L'injection de l'implémentation par défaut dans la table est présente dans les fichiers SQL du module.
+                </p>
+                <p>
+                    Une fois l'instanciation du <em>generic attribute</em> correctement référencée, il est disponible dans votre application, avec les autres <em>generic attributes</em>.
+                </p>
             </subsection>
             <subsection name="Configuration">
-                <p></p>
+                <p>
+                    Il faut que la CGU à utiliser soit d'abord configurée dans le <em>plugin-cgu</em>.
+                </p>
+                <p>
+                    <strong>Attention : </strong>Si une nouvelle version de la CGU est publiée dans le <em>plugin-cgu</em>, <strong>il faut</strong> retourner dans la configuration du <em>generic attribute</em> CGU en back-office et <strong>réenregistrer</strong> (même s'il n'y a aucune modification) pour que les nouvelles données de la CGU soient prises en compte dans le <em>generic attribute</em>.
+                </p>
+                <p>
+                    <strong>La configuration présentée ci-dessous ne s'applique que pour l'implémentation par défaut fournie dans le module, c'est-à-dire pour le plugin-form.</strong>
+                </p>
+                <p>
+                    En back-office, au niveau des questions du formulaire, un type de question <strong>Conditions générales d'utilisations</strong> apparaît. Sa configuration est la suivante :
+                    <ul>
+                        <li><code>Titre</code> : le titre de la question.</li>
+                        <li><code>Code</code> : le code de la question.</li>
+                        <li><code>Code CGU</code> : le code de la CGU à utiliser. Ce code correspond à celui défini dans le <em>plugin-cgu</em> pour la CGU.</li>
+                        <li><code>Aide</code> : aide affichée sous la question.</li>
+                        <li><code>Classes CSS</code> : classes CSS utilisées pour la question.</li>
+                    </ul>
+                </p>
             </subsection>
             <subsection name="Usage">
-                <p></p>
+                <p>
+                    <strong>L'utilisation présentée ci-dessous ne s'applique que pour l'implémentation par défaut fournie dans le module, c'est-à-dire pour le plugin-form.</strong>
+                </p>
+                <p>
+                    Lorsqu'une question de type CGU est configurée dans le formulaire, une case à cocher apparaît dans la page front-office du formulaire. L'utilisateur est obligé de cocher cette case à cocher pour valider le formulaire. Sinon, un message d'erreur apparaît. L'utilisateur peut voir le texte de la CGU en cliquant sur le lien présent dans la question. Un nouvel onglet avec le texte s'ouvre alors.
+                </p>
+                <p>
+                    Une deuxième case à cocher peut être affichée si la CGU nécessite un âge minimum pour être acceptée. L'utilisateur est alors également obligé de cocher cette case à cocher pour valider le formulaire, afin de certifier son âge. Sinon, un message d'erreur apparaît.
+                </p>
+                <p>
+                    Voici un exemple d'affichage avec âge minimum à 15 ans, et message d'aide :
+                    <img src="images/questionCGU.png" />
+                </p>
             </subsection>
         </section>
     </body>
