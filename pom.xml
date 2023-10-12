@@ -60,4 +60,11 @@
     <jiraProjectName>MODGENACGU</jiraProjectName>
     <jiraComponentId>14860</jiraComponentId>
 </properties> 
+
+    <scm>
+        <connection>scm:git:https://github.com/lutece-secteur-public/gru-module-genericattributes-cgu.git</connection>
+        <developerConnection>scm:git:https://github.com/lutece-secteur-public/gru-module-genericattributes-cgu.git</developerConnection>
+        <url>https://github.com/lutece-secteur-public/gru-module-genericattributes-cgu.git</url>
+    </scm>
+
 </project>
